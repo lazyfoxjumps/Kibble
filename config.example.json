@@ -1,0 +1,39 @@
+{
+  "log_dir": "~/kibble",
+  "stash_file": "~/kibble/stash.json",
+  "full_day_score": 100,
+  "pet": {
+    "type": null,
+    "name": null,
+    "born_on": null
+  },
+  "sync": {
+    "obsidian": {
+      "enabled": true,
+      "vault_path": "~/Documents/Obsidian Vault",
+      "subfolder": "Kibble"
+    },
+    "notion": {
+      "enabled": true,
+      "database_id": null,
+      "parent_page_id": null
+    }
+  },
+  "tags": [
+    "Invisible Labor",
+    "Took Everything I Had",
+    "Routine",
+    "Creative",
+    "Self-Care"
+  ],
+  "references": {
+    "categories": "references/categories.md",
+    "scoring": "references/scoring.md",
+    "voice": "references/voice.md",
+    "bowl": "references/bowl.md",
+    "recap_template": "references/recap-template.md",
+    "review_template": "references/review-template.md",
+    "sync_obsidian": "references/sync-obsidian.md",
+    "sync_notion": "references/sync-notion.md"
+  }
+}

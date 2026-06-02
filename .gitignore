@@ -1,0 +1,11 @@
+# User's actual config (contains personal Notion workspace IDs)
+config.json
+
+# macOS
+.DS_Store
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+*~
