@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ---
 
+## [2.2.1] - 2026-06-03 (release v1.0.1)
+
+### Fixed
+
+- **Frontmatter key collision with Obsidian.** Renamed the per-tag counts key from `tags` to `tag_counts`, since Obsidian reserves `tags` for its own tag system (a daily file carries both `tag_counts: {...}` for Kibble and Obsidian-native `tags: [kibble, daily-log]`). Updated `SKILL.md`, `sync-obsidian.md`, and `review-template.md`. Also updated the Obsidian frontmatter `tags`/`cssclass` from the legacy `reverse-todo` to `kibble`.
+
+---
+
 ## [2.2.0] - 2026-06-03
 
 ### Changed (BREAKING: category system replaced)

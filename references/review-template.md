@@ -6,7 +6,7 @@ A review is pattern-spotting across multiple days. The whole point: surface some
 
 Walk every daily file in the window. Pull from frontmatter:
 - `total_score` per day
-- `tags` breakdown per day (older legacy days use `categories`; translate per the mapping in `categories.md`)
+- `tag_counts` breakdown per day (older legacy days use `categories`; translate per the mapping in `categories.md`)
 - `entries` count per day
 
 Compute:

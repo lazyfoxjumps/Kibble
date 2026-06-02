@@ -22,13 +22,13 @@ Mostly nothing. Same body, same entries, same recap. Two small additions to the 
 date: 2026-05-27
 entries: 3
 total_score: 40
-categories: { small_tasks: 8, self_care: 10, emotional_stuffs: 0, big_brain_hours: 22, creative_time: 0, rest: 0 }
-tags: [reverse-todo, daily-log]
-cssclass: reverse-todo
+tag_counts: { invisible_labor: 1, took_everything: 0, routine: 1, creative: 0, self_care: 1 }
+tags: [kibble, daily-log]
+cssclass: kibble
 ---
 ```
 
-`tags` and `cssclass` are Obsidian-native. The user can build dashboards, dataview queries, or theme overrides around them later without us doing anything.
+`tags` and `cssclass` are Obsidian-native (note: our per-tag counts live under `tag_counts` to avoid colliding with Obsidian's reserved `tags` key). The user can build dashboards, dataview queries, or theme overrides around them later without us doing anything.
 
 For review files use `tags: [reverse-todo, review, weekly]` (or `monthly`).
 

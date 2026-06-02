@@ -84,7 +84,7 @@ The local markdown file at `<log_dir>/YYYY/MM/YYYY-MM-DD.md` is the **source of 
 date: 2026-05-27
 entries: 3
 total_score: 35
-tags: { invisible_labor: 1, took_everything: 1, routine: 1, creative: 0, self_care: 1 }
+tag_counts: { invisible_labor: 1, took_everything: 1, routine: 1, creative: 0, self_care: 1 }
 ---
 
 ## Entries
@@ -96,7 +96,7 @@ tags: { invisible_labor: 1, took_everything: 1, routine: 1, creative: 0, self_ca
 (filled by recap mode)
 ```
 
-Tag keys in frontmatter use snake_case: `invisible_labor`, `took_everything`, `routine`, `creative`, `self_care`. The numbers are **counts of entries carrying that tag** (not summed scores), since an entry can hold multiple tags. `total_score` stays the true day total. An entry with no fitting tag is written `[untagged]` and counts toward `entries` and `total_score` but no tag key.
+The frontmatter key is `tag_counts` (NOT `tags`, which Obsidian reserves for its own tag system). Tag keys use snake_case: `invisible_labor`, `took_everything`, `routine`, `creative`, `self_care`. The numbers are **counts of entries carrying that tag** (not summed scores), since an entry can hold multiple tags. `total_score` stays the true day total. An entry with no fitting tag is written `[untagged]` and counts toward `entries` and `total_score` but no tag key.
 
 ## Mode: recap
 
