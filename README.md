@@ -54,7 +54,7 @@ The pet's reaction isn't linear. The vibe quietly turns from "go" to "okay, sit 
 
 Anything over 100 gets buried away like a squirrel with acorns. A 220 day banks 120. But the stash isn't a high score to hoard, it's only ever good for one thing: **rest you already earned.** It never buys prizes or pet hats. Just permission to stop.
 
-It spends itself in your favor. At recap, if you rested at all, a deliberate 💛 Self-Care entry, the pet digs up the reserves and rounds your bowl all the way up to a full day:
+It spends itself in your favor, the moment you rest. Log a deliberate 💛 Self-Care entry (a nap, lying down, a real meal) and the pet digs up the reserves right then, mid-day, and rounds your bowl all the way up to a full day. No waiting for recap. And it self-corrects: if you go on to do real work later, the borrowed kibble quietly goes back in the ground, you only ever net-spend what the day actually needed:
 
 > 🐱 Goblin: *fishes the hidden stash back out, drops it in the bowl for you* \
 > "You rested today, and that counts as a full day. Past-you saved up for exactly this."
@@ -67,6 +67,21 @@ And it knows the difference between *recharging* and *grinding*. Sleeping, drink
 You can also spend it on purpose: say "I'm drowning" for an on-demand dig mid-day, or claim a guilt-free day off ("I need a rest day") and tomorrow's bowl starts already full. The pile stops being a number that climbs forever and becomes what it actually is: **days off you've already earned.**
 
 Big days protect bad days. A bad day stops being a failure and starts being savings you already earned.
+
+---
+
+## Energy management for neurodivergent brains (the spoons)
+
+If you run on spoons, the real problem was never starting. It's that you can't feel the tank emptying until you're already face-down on the floor. Kibble is quietly a spoon gauge. The bowl shows what you've spent, and the fuller it gets, the more the whole thing shifts from "go" to "okay, stop":
+
+- **Under 100:** the bowl's still filling. You've got room.
+- **Past 100:** it overflows. That was a full day. Anything more is borrowed energy.
+- **150 to 200:** the pet's visibly stuffed and slowing down. That's your early-warning light, you're deep into reserves now.
+- **200+:** the food-coma intervention. The skill stops cheering the number and starts asking if you've eaten, had water, and whether you're still going because you *want* to or because you *can't stop*.
+
+And the stash is the other half of it: rest you've already earned, sitting there ready to spend, so a low-spoon day never reads as failure. Log a nap and the bowl fills from your reserves on the spot.
+
+The whole thing is built to answer the one question a neurodivergent nervous system is worst at asking itself in the moment: **is it time to stop?** Kibble's answer, way more often than productivity culture will ever tell you, is *yes, and here's exactly why that's allowed.*
 
 ---
 

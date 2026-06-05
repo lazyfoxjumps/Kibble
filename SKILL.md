@@ -55,27 +55,31 @@ This is what makes big days *protect* bad days instead of spiking and crashing. 
 
 ### Banking (earning the stash)
 
-- **Banking** happens at **recap** time. If a day's total > 100, the amount over 100 gets buried in the stash. A 220 day banks 120. Add a `bank` ledger entry and increase `balance`.
+- **Banking** happens at **recap** time, off **real effort `R`** (the `total_score`, never the dug bowl display). If `R > 100`, the amount over 100 gets buried. A 220 day banks 120. Add a `bank` ledger entry and increase `balance`. Banking and digging are mutually exclusive on a given day: if `R > 100` the dig target is already 0 (reconciled), so a day either banks surplus or borrows a dig, never both.
 - Bank **once per day**, at recap. If a recap is re-run for a day, do not double-count: check the ledger for an existing entry for that date and replace it rather than stacking.
 
 ### Spending the stash (three ways, all = rest)
 
-**1. Auto dig-in (recap, tag-triggered).** The stash covers **chosen rest**, not **hard-won survival**, and the 💛 Self-Care tag is the signal. At recap, dig in **if the day has at least one entry tagged *purely* 💛 Self-Care** (Self-Care with NO other tag stacked on it). The pet tops the bowl up so a day that included real rest reads as a full, complete day.
+**1. Auto dig-in (LIVE, tag-triggered, self-reconciling).** The stash covers **chosen rest**, not **hard-won survival**, and the 💛 Self-Care tag is the signal. The dig fires **the moment a qualifying rest entry is logged**, mid-day, before the day is "done" and before the bowl is full. It does NOT wait for recap. It is then **recomputed on every later log and again at recap** so the math stays honest as real effort piles on.
 
-- **A pure 💛 entry triggers the dig** (a nap, a deliberate day off, downtime you chose, but also routine maintenance like meds / a meal / a shower, which Kibble tags 💛). That's intended: any day you genuinely rested at all gets rounded up to a full bowl.
-- **Restorative acts stay pure 💛 even on a brutal day** (see categories.md). Sleep, a nap, drinking water, eating a meal, taking medicine, a bath: these *recharge* the user, so they are NOT stacked with 🔋 and they DO fire the full dig. A depression day whose self-care was "slept, drank water, ate something" gets the full round-up to 100, because resting and replenishing on a hard day is exactly the chosen rest the stash exists to cover.
-- **A 💛 entry stacked with another tag does NOT trigger the full dig**, especially 💛 + 🔋 Took Everything I Had for self-care that *cost* the user instead of recharging them ("brushed teeth while depressed", a hard-won shower). That entry was hard-won effort, it already earns real kibble with the bad-day multiplier, and covering it from the stash would erase the fact that it was hard. Those points stand on their own (a hard-won day gets the soft dig instead, mode 1b).
-- **Amount (the guard):** a full dig only fills the bowl **up to 100, never past it.** `dig_amount = max(0, 100 − day_total)`. If the day is already at or above 100, it's a **no-op** (nothing to top up, stash untouched). This keeps the math honest: rested days round up to full, the stash trends *down* over time and only refills on genuine 100+ days.
-- Add a `dig` ledger entry with `"trigger":"recap"`, decrease `balance` by the dig amount, and narrate it (see voice.md). Dig once per day at recap; replace, don't stack, on a re-run. If `dig_amount` is 0, write nothing and narrate nothing.
+Run this **after appending any entry** (log mode) and once more at recap:
 
-**1b. Soft dig (recap, hard-won days get comfort without erasure).** When NO pure-💛 entry fired the full dig, but the day was clearly a *hard-won* one, made of 💛 + 🔋 entries ("brushed teeth while depressed"), or the entries/context plainly reflect a struggling, low day, the pet brings a small comfort handful. This is the gentle catch so a rough day still gets the "I've got you" beat.
+1. Compute **`R`** = the day's real effort total (sum of logged entry scores). This is what goes in `total_score`, and it NEVER includes dug kibble.
+2. Decide the day's dig **tier**:
+   - **FULL** if the day has at least one entry tagged *purely* 💛 Self-Care (Self-Care, no other tag stacked). Restorative acts (nap, sleep, water, meal, meds, bath) are exactly this and stay pure 💛 even on a burnout day (see categories.md + log step 3). Any day you genuinely rested at all qualifies.
+   - **SOFT** else if the day has a 💛 + 🔋 hard-won entry ("brushed teeth while depressed", a hard-won shower), or the entries/context plainly read as a struggling low day. The hard-won effort keeps its honest score; covering it fully would erase that it was hard.
+   - **NONE** otherwise.
+3. Compute the dig **target**:
+   - FULL: `target = max(0, 100 − R)` (round the bowl up to a full day, never past 100)
+   - SOFT: `target = min(15, max(0, 60 − R))` (a small comfort handful, never lifts past the "solid day" line of 60)
+   - NONE: `target = 0`
+4. **Reconcile** against today's single dig ledger entry: `delta = target − current_dig_amount`; set `balance −= delta`; update the day's dig entry to `amount = target` (remove it if 0). Borrowed kibble is automatically **returned** as real effort climbs: a nap at R=20 digs 80 to hit 100, a later 50-point work block (R=70) shrinks the dig to 30 and hands 50 back, and once real effort passes 100 the dig self-zeroes. One dig entry per day, always replace, never stack.
+5. The **bowl display** = `R + today's dig amount`. A rested low day shows a full bowl immediately, funded transparently from reserves. (A day already at or above 100 of real effort has `target = 0`: nothing to top up, stash untouched. This is why today's 263 day spends nothing, the bowl is already past full.)
 
-- **The effort still stands at full weight.** A soft dig is comfort, not a correction. It never tops the day up to "full," because erasing the hardness is the exact thing we're avoiding. The logged score stays honest.
-- **Amount (kept small on purpose):** `soft_dig = min(15, max(0, 60 − day_total))`. A symbolic handful (up to 15) that never lifts the bowl past the "solid day" line of 60. A brutal day at 12 becomes 27, still visibly a hard day, but the pet showed up. If the day is already at or above 60, it's a **no-op** (they did plenty, no comfort kibble needed).
-- **Trigger:** no pure-💛 full dig fired AND (the day carries at least one 🔋 Took Everything I Had entry, OR the entries/context clearly read as a hard, struggling day). If neither a full nor soft dig applies, no dig.
-- Add a `dig` ledger entry with `"trigger":"recap"` and `"note"` marking it a soft dig, decrease `balance`. Once per day; replace on re-run. If `soft_dig` is 0, write and narrate nothing.
+Mark the ledger entry `"trigger":"log"` when it fires/updates during a log, `"recap"` when finalized at recap. If `target` is 0, write nothing and narrate nothing.
 
-> The point of the split: a *rested* day (pure 💛) rounds up to a full bowl; a *hard-won* day (💛 + 🔋) keeps its honest, lower score AND still gets a small comforting handful and the gentle voice. Either way a rough day never reads as failure, but only chosen rest gets rounded all the way up.
+> Why it's live: resting should *do something* the moment you log it, not hours later. So it does. The reconcile step keeps it honest, you only ever net-spend what the day actually needed to reach a full bowl, and a day that fills itself with real effort quietly returns everything it borrowed.
+> Why the split stays: a *rested* day (pure 💛) rounds up to 100; a *hard-won* day (💛 + 🔋) keeps its honest lower score AND gets a small comfort handful. A rough day never reads as failure, but only chosen rest rounds all the way up.
 
 **2. Manual dig (on demand, mid-day).** See **Mode: dig**. The user can ask for a top-up *before* recap, any time, when they're drowning. Same emotional beat as the auto dig, but they triggered it. Add a `dig` ledger entry with `"trigger":"manual"`.
 
@@ -114,11 +118,13 @@ The local markdown file at `<log_dir>/YYYY/MM/YYYY-MM-DD.md` is the **source of 
 1. Parse what the user said into one or more entries. If they dumped multiple things ("brushed teeth, answered avi, paid 2 bills"), split into separate entries.
 2. **No future tasks.** If they try to log a plan ("I need to call the dentist tomorrow"), gently bounce it: "That's a tomorrow thing. Come back when it's done and we'll feed the little guy then." The done-only space stays sacred.
 3. For each entry, load `references/categories.md` and assign **zero or more** of the 5 tags (multi-select): 🧠 Invisible Labor, 🔋 Took Everything I Had, 🔁 Routine, 🎨 Creative, 💛 Self-Care. Most entries get 1 or 2. 🔋 and 🧠 stack on top of an activity tag. When 🔋 is on, apply the bad-day scoring multiplier.
+   - **Before stacking 🔋 on a 💛 Self-Care entry, run the restorative check (do not skip this, it is the most-missed rule).** Ask: did the act *recharge / replenish* the user, or did it *cost* them? A nap, sleeping, drinking water, eating, taking meds, a bath, lying down to recover all GIVE energy back, so they stay **pure 💛** even when the user says they're burned out, exhausted, depressed, or "needed it." The burnout context drives the *score* (bad-day multiplier, see scoring.md), it does NOT add the 🔋 tag. Only stack 🔋 when the self-care act was *hard-won and draining* (a shower you had to fight for, brushing teeth while depressed). "Napped because of feeling burned out" = **pure 💛**, never 🔋. This split matters: pure 💛 fires the full stash dig at recap, 💛 + 🔋 only gets the soft dig.
 4. For each entry, load `references/scoring.md` and assign a 0-100 kibble score using the rubric. Apply bad-day and invisible-labor multipliers when context warrants (recent entries mention exhaustion, depression, illness, big emotional events, the "took everything I had" signal, etc.). The score is **auto-suggested**, the user never has to invent it. They can nudge it, but the default does the work so the ND brain never stalls scoring its own life.
-5. Append to today's file at `<log_dir>/YYYY/MM/YYYY-MM-DD.md`. If the file doesn't exist, create it with the frontmatter scaffold. If it exists, append to `## Entries` and update the frontmatter (entries count, total_score, categories breakdown).
-6. Use the user's local time (HH:MM) for the timestamp. If they specified a different time ("I did this at 2pm"), use that instead.
-7. **Run sync** to Obsidian + Notion per the Sync section.
-8. Reply with a tiny confirmation in best-friend voice (see voice.md), plus **the bowl** rendered per `references/bowl.md` (full bowl every log, per the user's setting), showing the running day total filling toward 100 and the pet reacting proportionally to this entry. Keep the words to one or two lines; the bowl carries the rest. If a sync target failed this session, append a brief "(FYI, X sync skipped)" once.
+5. Append to today's file at `<log_dir>/YYYY/MM/YYYY-MM-DD.md`. If the file doesn't exist, create it with the frontmatter scaffold. If it exists, append to `## Entries` and update the frontmatter (entries count, `total_score` = real effort `R`, tag_counts).
+6. **Run the live dig reconcile** (Stash, mode 1) against the new `R` and update `stash.json`. If a rest entry was just logged on a sub-100 day, this is where the stash digs in immediately and the bowl jumps to full. If real effort just pushed the day past 100, this is where any earlier dig hands its kibble back.
+7. Use the user's local time (HH:MM) for the timestamp. If they specified a different time ("I did this at 2pm"), use that instead.
+8. **Run sync** to Obsidian + Notion per the Sync section.
+9. Reply with a tiny confirmation in best-friend voice (see voice.md), plus **the bowl** rendered per `references/bowl.md` (full bowl every log), where the displayed total = `R + today's dig`. If this entry triggered or changed a dig, narrate the stash moving (see voice.md stash pools), this is the live dig-in the user feels in the moment. Keep words to one or two lines; the bowl carries the rest. If a sync target failed this session, append a brief "(FYI, X sync skipped)" once.
 
 ### Daily file format
 
@@ -145,8 +151,8 @@ The frontmatter key is `tag_counts` (NOT `tags`, which Obsidian reserves for its
 
 1. Read today's daily file. If it doesn't exist, gently call it out and offer to log right now.
 2. Load `references/recap-template.md`, `references/voice.md`, and `references/bowl.md`.
-3. Compute the total score, the category breakdown, and the highest-scoring entry.
-4. **Update the stash** (see Stash section): bank surplus if total > 100; else **full dig** if the day has a pure-💛 Self-Care entry (fill the bowl up to 100, no-op if already there); else **soft dig** a small comfort handful if the day was hard-won (a 🔋 entry or clearly a struggling day). A claimed rest day (`rest_day: true`) neither banks nor digs. Do this before writing the recap so the recap can narrate it.
+3. Compute **`R`** (real effort `total_score`), the tag breakdown, and the highest-scoring entry. The bowl display = `R + today's dig`.
+4. **Finalize the stash** (see Stash section): re-run the live dig reconcile one last time against the final `R` (a dig may have already fired during the day's logging, this just settles it). Net result: if `R > 100`, **bank** the surplus (the dig is already 0); else the **full dig** stands if the day has a pure-💛 Self-Care entry (bowl rounded up to 100); else a **soft dig** comfort handful if the day was hard-won (a 🔋 entry or clearly a struggling day). A claimed rest day (`rest_day: true`) neither banks nor digs. Do this before writing the recap so the recap can narrate it.
 5. Generate the recap following the template. The tone and the bowl shift by total score, including the overflow tiers (see voice.md and bowl.md):
    - **Under 30:** very gentle. Hard day, full stop. If the day held a pure-💛 rest entry, the stash fully dug in and this is where the "past-you saved up for exactly this" moment lands. If it was hard-won 💛 + 🔋 effort, the soft dig brings a small comforting handful and the message is "what you did counted at full weight, and here's a little extra because today was hard, not because you had to earn it."
    - **30-99:** gentle to warm. Name what they did do. A real day with real life in it.
