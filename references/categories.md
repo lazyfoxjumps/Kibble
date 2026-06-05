@@ -35,6 +35,8 @@ Not an activity, an **intensity flag**. Stack it on any entry that cost you far 
 
 When this tag is on, apply the bad-day scoring multiplier (see scoring.md). Brushing teeth on a depression day with 🔋 is a 7, not a 4.
 
+**Restorative self-care exception (important for the stash dig):** do NOT stack 🔋 on a self-care act that *recharges or replenishes* the user, even on a hard day. Sleep, a nap, drinking water, eating a meal, taking medicine, a bath, lying down to recover: these give energy back, so they stay **pure 💛 Self-Care** and read as chosen rest. The litmus is direction: did the act *cost* them (brushing teeth, showering, getting dressed when each was a battle → 💛 + 🔋) or did it *give something back* (→ pure 💛)? The bad-day generosity still applies to these pure-💛 restorative entries through context (see scoring.md), so "drank water while depressed" still scores like a hard-day 7, it just isn't tagged 🔋. This matters because pure 💛 triggers the full stash dig (rounds the day up to 100), while 💛 + 🔋 gets only the soft dig (see SKILL.md).
+
 ---
 
 ## 🔁 Routine
@@ -76,7 +78,9 @@ Anything that kept your body and mind alive and let your nervous system come dow
 - Therapy, doctor, going to bed at a real hour
 - **Rest as output:** a nap, a bath, a show you actually chose, reading for pleasure, deliberately doing nothing
 
-Deliberate rest scores normally (12-25). Doom-scrolling-because-you-couldn't-transition is closer to 5-10, score it lower and gently. If self-care happened on a brutal day, stack 🔋.
+Deliberate rest scores normally (12-25). Doom-scrolling-because-you-couldn't-transition is closer to 5-10, score it lower and gently.
+
+**On a brutal day, stack 🔋 only if the act *cost* them** (a hard-won shower, dragging through teeth-brushing). If the act *recharged* them (sleep, nap, water, a meal, meds, a bath), leave it **pure 💛**, that's restorative rest, not hard-won grind, and it triggers the full stash dig. See the restorative self-care exception under 🔋 above.
 
 ---
 

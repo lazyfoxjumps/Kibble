@@ -31,7 +31,7 @@ Total: 100. That's a complete normal day. Crossing 100 means you went beyond tha
 ### Multipliers (apply when context supports it)
 
 **Bad-day multiplier (x1.5 to x2):**
-Apply if recent entries or chat context mention any of: sick, hungover, depression spike, anxiety spike, period, grief day, no sleep, post-trauma, post-crisis. Brushing teeth on a depression day is a 7, not a 4.
+Apply if recent entries or chat context mention any of: sick, hungover, depression spike, anxiety spike, period, grief day, no sleep, post-trauma, post-crisis. Brushing teeth on a depression day is a 7, not a 4. This multiplier is driven by **context**, not by the 🔋 tag: 🔋 is one trigger, but the multiplier still applies on a hard day even when an entry is left pure 💛. So a *restorative* act like "drank water" or "ate a meal" on a depression day still scores like a hard-day 7, even though it is not tagged 🔋 (see the restorative self-care exception in categories.md).
 
 **Invisible labor multiplier (x1.3 to x1.5):**
 Apply when the user almost didn't log something because it "doesn't count." If they include a self-deprecating phrase ("I literally just," "all I did was," "I should have done more"), that's a signal they're discounting real work. Bump the score.

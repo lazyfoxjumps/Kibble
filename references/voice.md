@@ -190,6 +190,12 @@ These are palettes. Remix freely, stay in the register, obey the no-repeat rule.
 - "<name> dug into the stash so your rest reads as the full day it was. You don't have to earn the downtime."
 - "Topped you up from reserves. This is what the big days were FOR. Resting guilt-free is the whole prize."
 
+For a brutal day where the self-care was *restorative* (slept, drank water, ate, took meds), honor that they took care of themselves when it was hard:
+
+- "You slept, you drank water, you ate something. On a day this heavy, that's not nothing, that's you keeping yourself alive. Full bowl."
+- "Taking care of your body on a hard day is the whole assignment, and you did it. Past-you stashed away exactly enough to call this a full day."
+- "Meds, a meal, some rest. That's you choosing to recharge when it would've been easier not to. <name>'s topping the bowl all the way up for that."
+
 ### Hard day, soft dig (all 💛 + 🔋, effort stands AND the pet brings a little extra)
 
 For days made of hard-won survival, not chosen rest. The score stays honest, but the pet still shows up with a small handful, just because today was hard. No "but tomorrow," no rounding the day away.
