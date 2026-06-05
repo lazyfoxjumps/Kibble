@@ -52,10 +52,19 @@ The pet's reaction isn't linear. The vibe quietly turns from "go" to "okay, sit 
 
 ## The stash 🐿️
 
-Anything over 100 gets buried away like a squirrel with acorns. A 220 day banks 120. Then on a brutal low day, when you scrape together 15 and your brain starts the spiral, the pet digs up the reserves and tops the bowl anyway:
+Anything over 100 gets buried away like a squirrel with acorns. A 220 day banks 120. But the stash isn't a high score to hoard, it's only ever good for one thing: **rest you already earned.** It never buys prizes or pet hats. Just permission to stop.
+
+It spends itself in your favor. At recap, if you rested at all, a deliberate 💛 Self-Care entry, the pet digs up the reserves and rounds your bowl all the way up to a full day:
 
 > 🐱 Goblin: *fishes the hidden stash back out, drops it in the bowl for you* \
-> "Rough one, huh. That's fine. Past-you saved up for exactly this. You're covered."
+> "You rested today, and that counts as a full day. Past-you saved up for exactly this."
+
+And it knows the difference between *recharging* and *grinding*. Sleeping, drinking water, eating, taking your meds on a day that tried to flatten you, those give something back, so they count as real rest and earn the full top-up. But the hard-won stuff, like brushing your teeth while depressed, keeps its honest, hard-earned score and gets a small comfort handful on top instead. Never erased, just held:
+
+> 🐶 Biscuit: *nudges a small handful over, just because today was hard* \
+> "That took everything, and it's on the list at full weight. The extra's just a hug."
+
+You can also spend it on purpose: say "I'm drowning" for an on-demand dig mid-day, or claim a guilt-free day off ("I need a rest day") and tomorrow's bowl starts already full. The pile stops being a number that climbs forever and becomes what it actually is: **days off you've already earned.**
 
 Big days protect bad days. A bad day stops being a failure and starts being savings you already earned.
 
@@ -69,15 +78,15 @@ Each entry gets zero or more (multi-select). Two of them stack on top of anythin
 - 🔋 **Took Everything I Had** — not an activity, an intensity flag. Stack it on anything that cost you way more than it "should have." This is what lets leaving the house on a depression day score high.
 - 🔁 **Routine** — errands, chores, bills, replies, the upkeep.
 - 🎨 **Creative** — you made a thing that didn't exist before. Good or not, shipped or not.
-- 💛 **Self-Care** — food, meds, hygiene, movement, therapy, and rest. Rest is output, not the absence of it.
+- 💛 **Self-Care** — food, meds, hygiene, movement, therapy, and rest. Rest is output, not the absence of it. The recharging kind (sleep, water, a meal) is what the stash quietly tops up to a full day when you're running on empty.
 
 ---
 
-## The three modes
+## The modes
 
 **`log`** (the default). Tell it what you did. It tags, auto-scores, drops the kibble, shows the bowl. You never invent the number, that's the whole point, the ND brain doesn't get to stall scoring its own worth.
 
-**`recap`.** End of day. Reads your wins back, totals the bowl, banks or digs into the stash, and tucks the little guy in. The tone shifts with the number, all the way up through the food-coma intervention.
+**`recap`.** End of day. Reads your wins back, totals the bowl, banks the surplus or digs the stash up to cover the rest you got, and tucks the little guy in. The tone shifts with the number, all the way up through the food-coma intervention.
 
 **`review`.** Weekly or monthly pattern-spotting. Not generic stats. Stuff like:
 
@@ -85,12 +94,16 @@ Each entry gets zero or more (multi-select). Two of them stack on top of anythin
 
 > "60% of your week carried the 🧠 Invisible Labor tag. You're the designated feelings-holder for someone right now. That's real, and it's expensive."
 
+**`dig`.** Drowning before the day's even over? Say so ("I can't today," "dig into the stash") and the pet pulls from reserves right then, no waiting for recap.
+
+**`rest`.** Claim a guilt-free day off ("I need a rest day," "take tomorrow off"). The stash pays for it and the bowl starts full. The pile is just how many of these you've already banked.
+
 ---
 
 ## Where your data lives
 
 1. **Local markdown** at `~/kibble/YYYY/MM/YYYY-MM-DD.md`. The source of truth. Plain text, greppable, yours. (The old `~/reverse-todo` path still works, it symlinks here.)
-2. **Stash** at `~/kibble/stash.json`, the running surplus. Local only.
+2. **Stash** at `~/kibble/stash.json`, the surplus you bank and spend back on rest. Local only.
 3. **Obsidian** (optional sync), same daily files with tags.
 4. **Notion**, a database called "Kibble," one page per day, fully queryable.
 
@@ -128,6 +141,7 @@ Just talk to it. Anything that sounds like "here's what I did" logs:
 Or the explicit moves:
 - `/kibble recap` at end of day
 - `/kibble review week` / `/kibble review month`
+- `/kibble dig` when you're drowning mid-day, or `/kibble rest` to claim a day off
 
 The legacy `/reverse-todo ...` triggers still work. And if you spiral, just say "I didn't do anything today" and watch it pull up the bowl and read it back at you. That's the entire point.
 
@@ -137,6 +151,7 @@ The legacy `/reverse-todo ...` triggers still work. And if you spiral, just say 
 
 - Lecture you, or tell you what you "should" do tomorrow
 - Use "grind," "hustle," "crush it," or chase a high score (past 200 it actively tells you to stop)
+- Turn the stash into a points shop or a number to hoard (it only ever buys rest)
 - Pretend rest doesn't count
 - Compare you to anyone, or to your own best day
 - Punish a missed day (the pet just naps, no streak resets)
@@ -151,7 +166,7 @@ What it WILL do is keep the receipts, feed the little guy, and hand the receipts
 
 ```
 kibble/
-  SKILL.md              the 3-mode dispatch, pet, stash, onboarding
+  SKILL.md              the 5-mode dispatch, pet, stash, onboarding
   config.json           paths, pet, stash, sync settings, tags
   config.example.json   template config
   README.md             this thing
