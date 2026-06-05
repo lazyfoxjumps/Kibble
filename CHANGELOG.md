@@ -6,6 +6,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ---
 
+## [2.3.1] - 2026-06-05 (release v1.1.1)
+
+### Fixed
+
+- **Restorative rest was getting mistagged 💛 + 🔋.** A nap / sleep / water / meal recharges you, so it must stay **pure 💛** even on a burnout day; 🔋 is only for self-care that *cost* you. Added a mandatory restorative check to log-mode step 3 ("napped because of feeling burned out" = pure 💛, never 🔋) so the bad-day reflex stops stacking 🔋 on rest.
+
+### Changed
+
+- **The stash dig is now LIVE and self-reconciling, not recap-only.** Logging a restorative 💛 entry digs the stash the moment you log it (mid-day, before the bowl is full), rounding the bowl up to 100 immediately. It recomputes on every later log and at recap: `dig = max(0, 100 − R)` for a rested day, so as real effort climbs the borrowed kibble is automatically returned, and a day whose real effort passes 100 self-zeroes the dig and banks the surplus instead. `total_score` now means real effort `R` (never includes dug kibble); the bowl display = `R + dig`. Updated SKILL.md (stash mode 1, banking, log + recap steps) and README.
+
+### Added
+
+- **README: neurodivergent energy-management section.** Frames the bowl as a spoon gauge and the overflow tiers + food-coma intervention + stash as a system for answering "is it time to stop?", to help neurodivergent users notice when they're running out of spoons and that resting is allowed.
+
+---
+
 ## [2.3.0] - 2026-06-05 (release v1.1.0)
 
 ### Changed (auto-dig is now tag-triggered, not low-total-triggered)
@@ -27,24 +43,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - **Spend guardrails:** spends are never blocked (balance never below 0); a one-time soft warning fires if a spend would leave reserves low.
 - **Ledger** gains a `rest` type and a `trigger` field (`recap` vs `manual`) on digs. Stash stays local-only (not synced).
 - New dialogue pools in `voice.md` (manual dig, rest-day claim, "you're loaded", soft warning), new render blocks in `bowl.md`, and a rest-day-claim reaction in both pet files. `recap-template.md` updated to skip bank/dig on claimed rest days.
-
----
-
-## [2.3.0] - 2026-06-05 (release v1.1.1)
-
-### Fixed
-
-- **Restorative rest was getting mistagged 💛 + 🔋.** A nap / sleep / water / meal recharges you, so it must stay **pure 💛** even on a burnout day; 🔋 is only for self-care that *cost* you. Added a mandatory restorative check to log-mode step 3 ("napped because of feeling burned out" = pure 💛, never 🔋) so the bad-day reflex stops stacking 🔋 on rest.
-
-### Changed
-
-- **The stash dig is now LIVE and self-reconciling, not recap-only.** Logging a restorative 💛 entry digs the stash the moment you log it (mid-day, before the bowl is full), rounding the bowl up to 100 immediately. It recomputes on every later log and at recap: `dig = max(0, 100 − R)` for a rested day, so as real effort climbs the borrowed kibble is automatically returned, and a day whose real effort passes 100 self-zeroes the dig and banks the surplus instead. `total_score` now means real effort `R` (never includes dug kibble); the bowl display = `R + dig`. Updated SKILL.md (stash mode 1, banking, log + recap steps) and README.
-
-### Added
-
-- **README: neurodivergent energy-management section.** Frames the bowl as a spoon gauge and the overflow tiers + food-coma intervention + stash as a system for answering "is it time to stop?", to help neurodivergent users notice when they're running out of spoons and that resting is allowed.
-
-> Note on versioning: this is the first public release to carry the full three-way stash-spend system (live auto dig, on-demand `dig`, and `rest`-day claims) plus the restorative-tag fix, hence the jump to the 1.1.x line.
 
 ---
 
