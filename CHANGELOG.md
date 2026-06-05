@@ -6,6 +6,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ---
 
+## [2.3.0] - 2026-06-05
+
+### Changed (auto-dig is now tag-triggered, not low-total-triggered)
+
+- **The recap auto-dig no longer fires on "brutal low day (total < 30 / spiraling)." It now fires on the 💛 Self-Care tag.** The governing principle: the stash covers *chosen rest*, not *hard-won survival*.
+  - At recap, if the day has **at least one entry tagged purely 💛 Self-Care** (no other tag stacked), the stash digs in and fills the bowl **up to 100** (`dig = max(0, 100 − total)`, no-op at/above 100). Any day you genuinely rested gets rounded up to a full bowl.
+  - A **💛 + 🔋 stack** ("brushed teeth while depressed") does **not** trigger a dig: it's hard-won effort that already earns real kibble via the bad-day multiplier, and covering it would erase that it was hard. Those points stand on their own.
+  - Net effect: the stash now trends *down* over time and only refills on genuine 100+ days, which fixes the "stash piles up forever for no reason" problem.
+- **Soft dig (new): hard-won days still get comfort, without erasing the hardness.** When no pure-💛 full dig fires but the day was hard-won (a 🔋 entry, or clearly a struggling day), the pet brings a small handful: `soft_dig = min(15, max(0, 60 − total))`. It never lifts the bowl past the "solid day" line of 60, so the logged score stays honest and the day still reads as the hard day it was. The comfort is the pet showing up, not the number changing. A pure rest day rounds all the way up to 100 (full dig); a hard-won day keeps its low score and gets a hug (soft dig). New voice pool and bowl render added for this case.
+
+### Added (the stash is now spendable, only ever on rest)
+
+- **The stash was a one-way pile (bank surplus, auto-dig on bad days). Now it can be spent on purpose, but only ever on rest, never a points shop.** Three spend paths:
+  - **Manual dig (`Mode: dig`)** — user-triggered mid-day top-up when they're drowning, instead of waiting for the recap auto-dig. Triggers: "/kibble dig", "I can't today", "I'm drowning", "dig into the stash". Tops the bowl toward the day's average; same loving beat as the auto dig.
+  - **Rest-day claim (`Mode: rest`)** — spend the stash to pre-authorize a guilt-free zero day (today or tomorrow). Triggers: "/kibble rest", "I need a day off", "take tomorrow off", "can I afford a rest day". Marks the day `rest_day: true`, pre-fills the bowl full; recap of a rest day never banks/digs and never reads as a failed day.
+  - **"You're loaded" reframe** — a high balance is named in days-off-already-earned terms, not as a number to grow, killing the "piling up for no reason" feeling.
+- **Rest-day pricing:** cost = rounded recent average day total (last 7 logged days), floor 50, fallback 100. A rest day costs what a real day costs you.
+- **Spend guardrails:** spends are never blocked (balance never below 0); a one-time soft warning fires if a spend would leave reserves low.
+- **Ledger** gains a `rest` type and a `trigger` field (`recap` vs `manual`) on digs. Stash stays local-only (not synced).
+- New dialogue pools in `voice.md` (manual dig, rest-day claim, "you're loaded", soft warning), new render blocks in `bowl.md`, and a rest-day-claim reaction in both pet files. `recap-template.md` updated to skip bank/dig on claimed rest days.
+
+---
+
 ## [2.2.1] - 2026-06-03 (release v1.0.1)
 
 ### Fixed

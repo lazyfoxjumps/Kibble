@@ -50,7 +50,9 @@ When the day crosses 200, the recap changes what it rewards: rest, not more kibb
 
 ### 4c. The stash beat (only if the stash moved this recap)
 
-If the day banked surplus (total > 100), one light line: "Your guy buried [N] away for a rainy day." If the stash dug in (brutal low day), this is the emotional center of the recap, give it weight, don't rush it: "Rough one, huh. Past-you saved up for exactly this. You're covered." See voice.md stash voice.
+If the day banked surplus (total > 100), one light line: "Your guy buried [N] away for a rainy day." If the stash fully dug in (the day held a pure-💛 Self-Care entry and was under 100), this is the emotional center of the recap, give it weight, don't rush it: "You rested today, and that counts as a full day. Past-you saved up for exactly this." If the day was hard-won effort with no pure-rest entry (all 💛 + 🔋), the **soft dig** brings a small handful without rounding the day up: the score stays honest and the comfort is "that counted at full weight, and here's a little extra because today was hard, not because you had to earn it." See voice.md stash voice.
+
+**If today was a claimed rest day** (`rest_day: true` in frontmatter): do NOT bank and do NOT auto-dig, the day was already paid for. Don't treat it as a low/failed day either. Frame it as the planned rest it was: "Today was a rest day, and it was already covered. You don't owe it anything." Anything they happened to log is pure bonus, celebrate it lightly without turning it back into a productivity day. Occasionally, when the balance is still high, name it in rest terms ("still got about [daysOff] more banked").
 
 ### 5. Close
 

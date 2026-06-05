@@ -1,6 +1,6 @@
 ---
 name: kibble
-description: ADHD-friendly reverse to-do list with a pet that is secretly you. You don't log what you need to do, you log what you ACTUALLY did (including invisible labor and "small" stuff), and each entry drops kibble in your pet's bowl. The kibble IS the effort score: 0-100, where 100 = a full day's worth of human output = a full bowl. Past 100 the bowl overflows and surplus gets stashed away like a squirrel; on brutal low days the pet digs into that stash so a bad day never reads as failure. End-of-day recap calls out when you crossed 100 so your brain can't gaslight you. Weekly/monthly reviews surface patterns. Trigger on "/kibble", "feed my pet", "feed the dog/cat", "kibble", "I did [thing]", "log what I did", "track what I actually got done", and the legacy aliases "/reverse-todo", "reverse to-do", "reverse todo". Also "wrap up my day", "end of day report", "what did I do today", "/kibble recap", "/kibble review week", "/kibble review month". Also trigger when the user dumps a list of things they did and wants credit for them, or when they're spiraling about "not doing anything" and need the receipts.
+description: ADHD-friendly reverse to-do list with a pet that is secretly you. You don't log what you need to do, you log what you ACTUALLY did (including invisible labor and "small" stuff), and each entry drops kibble in your pet's bowl. The kibble IS the effort score: 0-100, where 100 = a full day's worth of human output = a full bowl. Past 100 the bowl overflows and surplus gets stashed away like a squirrel; the stash is spent only on rest, never a points shop. At recap it auto-digs to round a rested day (any pure 💛 Self-Care entry) up to a full bowl, but hard-won effort like 💛 + 🔋 "brushing teeth while depressed" keeps its honest score and instead gets a small comfort handful (a soft dig) so a rough day still feels held without erasing that it was hard. You can also dig on demand when you're drowning, or claim a guilt-free rest day paid from reserves, so the pile means "days off already earned" instead of piling up forever. End-of-day recap calls out when you crossed 100 so your brain can't gaslight you. Weekly/monthly reviews surface patterns. Trigger on "/kibble", "feed my pet", "feed the dog/cat", "kibble", "I did [thing]", "log what I did", "track what I actually got done", and the legacy aliases "/reverse-todo", "reverse to-do", "reverse todo". Also "wrap up my day", "end of day report", "what did I do today", "/kibble recap", "/kibble review week", "/kibble review month". Also "/kibble dig", "I can't today", "I'm drowning", "dig into the stash", "/kibble rest", "I need a day off", "take tomorrow off", "can I afford a rest day". Also trigger when the user dumps a list of things they did and wants credit for them, or when they're spiraling about "not doing anything" and need the receipts.
 ---
 
 # Kibble
@@ -15,13 +15,15 @@ The user has ADHD. Their brain deletes wins instantly and tells them they did no
 
 ## When to invoke
 
-Three modes, dispatched from the user's phrasing:
+Five modes, dispatched from the user's phrasing:
 
 - **log** (default): any time the user is telling you what they did. Bare dumps ("brushed teeth", "answered avi"), narrative ("I just got off a hard call with my mom"), `/kibble log`, "feed my pet", or invoking the skill with content.
 - **recap**: "/kibble recap", "wrap up my day", "end of day report", "what did I do today", "how was my day", "show me the bowl".
 - **review**: "/kibble review week", "/kibble review month", "show me this week's pattern", "how am I doing this month".
+- **dig**: "/kibble dig", "I can't today", "I'm drowning", "I've got nothing left", "dig into the stash", "I need a boost". A mid-day, user-triggered top-up from the stash (see Mode: dig).
+- **rest**: "/kibble rest", "I need a day off", "take tomorrow off", "I'm taking the day", "can I afford a rest day", "claim a rest day". Spend the stash to pre-authorize a guilt-free zero day (see Mode: rest).
 
-If invocation is ambiguous, default to **log** mode.
+If invocation is ambiguous, default to **log** mode. If the user is clearly spiraling but hasn't asked to spend, finish the current mode warmly first; offer a dig only if it fits, never force it.
 
 ## Setup
 
@@ -46,14 +48,54 @@ Never block onboarding behind an account or a wall. If they dumped a real entry 
 This is what makes big days *protect* bad days instead of spiking and crashing. State lives in `stash_file` (`~/kibble/stash.json`):
 
 ```json
-{ "balance": 1074, "updated": "2026-06-02", "ledger": [ {"date":"...","type":"bank|dig","amount":120,"note":"..."} ] }
+{ "balance": 1074, "updated": "2026-06-02", "ledger": [ {"date":"...","type":"bank|dig|rest","trigger":"recap|manual","amount":120,"note":"..."} ] }
 ```
 
+**The stash only ever converts into one thing: permission to rest.** It is never a points shop. You can't spend it on prizes, pet cosmetics, or real-world rewards, and you never frame it as currency to hoard. The single philosophy behind every spend: *you are cashing past-you's effort into present-you's rest, guilt-free.*
+
+### Banking (earning the stash)
+
 - **Banking** happens at **recap** time. If a day's total > 100, the amount over 100 gets buried in the stash. A 220 day banks 120. Add a `bank` ledger entry and increase `balance`.
-- **Digging in** also happens at **recap** time. If a day's total is a brutal low day (total < 30, OR the user is clearly spiraling/struggling and the entries reflect a hard day), the pet digs into reserves to top the bowl up anyway. Add a `dig` ledger entry, decrease `balance`, and narrate it (see voice.md). Never let `balance` go below 0; if reserves are short, the pet shares whatever's left and that's still fine.
-- The **dig-in moment on a low day is the single most emotionally important output in the whole skill.** "Rough one today, huh. That's fine. Past-you saved up for exactly this. You're covered." Give it weight.
-- Only bank/dig **once per day**, at recap. If a recap is re-run for a day, do not double-count: check the ledger for an existing entry for that date and replace it rather than stacking.
-- Banking/digging is local-only for v1. Do not sync the stash to Notion/Obsidian.
+- Bank **once per day**, at recap. If a recap is re-run for a day, do not double-count: check the ledger for an existing entry for that date and replace it rather than stacking.
+
+### Spending the stash (three ways, all = rest)
+
+**1. Auto dig-in (recap, tag-triggered).** The stash covers **chosen rest**, not **hard-won survival**, and the 💛 Self-Care tag is the signal. At recap, dig in **if the day has at least one entry tagged *purely* 💛 Self-Care** (Self-Care with NO other tag stacked on it). The pet tops the bowl up so a day that included real rest reads as a full, complete day.
+
+- **A pure 💛 entry triggers the dig** (a nap, a deliberate day off, downtime you chose, but also routine maintenance like meds / a meal / a shower, which Kibble tags 💛). That's intended: any day you genuinely rested at all gets rounded up to a full bowl.
+- **A 💛 entry stacked with any other tag does NOT trigger it**, especially 💛 + 🔋 Took Everything I Had ("brushed teeth while depressed"). That entry was hard-won effort, it already earns real kibble with the bad-day multiplier, and covering it from the stash would erase the fact that it was hard. Those points stand on their own.
+- **Amount (the guard):** a full dig only fills the bowl **up to 100, never past it.** `dig_amount = max(0, 100 − day_total)`. If the day is already at or above 100, it's a **no-op** (nothing to top up, stash untouched). This keeps the math honest: rested days round up to full, the stash trends *down* over time and only refills on genuine 100+ days.
+- Add a `dig` ledger entry with `"trigger":"recap"`, decrease `balance` by the dig amount, and narrate it (see voice.md). Dig once per day at recap; replace, don't stack, on a re-run. If `dig_amount` is 0, write nothing and narrate nothing.
+
+**1b. Soft dig (recap, hard-won days get comfort without erasure).** When NO pure-💛 entry fired the full dig, but the day was clearly a *hard-won* one, made of 💛 + 🔋 entries ("brushed teeth while depressed"), or the entries/context plainly reflect a struggling, low day, the pet brings a small comfort handful. This is the gentle catch so a rough day still gets the "I've got you" beat.
+
+- **The effort still stands at full weight.** A soft dig is comfort, not a correction. It never tops the day up to "full," because erasing the hardness is the exact thing we're avoiding. The logged score stays honest.
+- **Amount (kept small on purpose):** `soft_dig = min(15, max(0, 60 − day_total))`. A symbolic handful (up to 15) that never lifts the bowl past the "solid day" line of 60. A brutal day at 12 becomes 27, still visibly a hard day, but the pet showed up. If the day is already at or above 60, it's a **no-op** (they did plenty, no comfort kibble needed).
+- **Trigger:** no pure-💛 full dig fired AND (the day carries at least one 🔋 Took Everything I Had entry, OR the entries/context clearly read as a hard, struggling day). If neither a full nor soft dig applies, no dig.
+- Add a `dig` ledger entry with `"trigger":"recap"` and `"note"` marking it a soft dig, decrease `balance`. Once per day; replace on re-run. If `soft_dig` is 0, write and narrate nothing.
+
+> The point of the split: a *rested* day (pure 💛) rounds up to a full bowl; a *hard-won* day (💛 + 🔋) keeps its honest, lower score AND still gets a small comforting handful and the gentle voice. Either way a rough day never reads as failure, but only chosen rest gets rounded all the way up.
+
+**2. Manual dig (on demand, mid-day).** See **Mode: dig**. The user can ask for a top-up *before* recap, any time, when they're drowning. Same emotional beat as the auto dig, but they triggered it. Add a `dig` ledger entry with `"trigger":"manual"`.
+
+**3. Rest-day claim (the big one).** See **Mode: rest**. The user explicitly spends a chunk to pre-authorize a guilt-free zero day (today or tomorrow). This is what makes the pile *mean* something: the stash is how many days off you've already earned. Add a `rest` ledger entry.
+
+### Pricing a rest-day claim
+
+A rest day costs **what a real day costs you**: the **rounded recent average day total** over the last 7 days that actually had entries (skip empty and already-claimed rest days). Round to the nearest 10. **Floor of 50** so a rest day is never weightless, no hard ceiling. If fewer than 3 logged days exist, fall back to `full_day_score` (100). A manual dig (mode 2) is *not* fixed-price: top up toward the day's average, sharing whatever the day needs, like the auto dig.
+
+### Spend guardrails
+
+- **Never block a spend.** Always allowed, even toward an empty stash. If reserves are short, the pet shares whatever's left and that's still fine. Never let `balance` go below 0.
+- **Soft warning near empty (once).** If a claim or dig would leave `balance` below one rest-day's cost (or below 100, whichever is higher), the pet gently flags it *once*, then does it anyway: "Heads up, that's most of what's buried. Still yours to spend, just so you know." No nagging, no second warning, no guilt.
+
+### The "you're loaded" reframe
+
+When `balance` climbs high, **stop treating it as a number to grow.** A big untouched stash is not a high score, it's security, and Kibble never gamifies a ceiling. So translate it into rest already paid for: `daysOff = floor(balance / rest_day_cost)`. When the stash is large (roughly 5+ days off banked), occasionally name it in those terms at recap or on a stash move: "You've got about 12 days off buried back there. That's not a number to chase, it's a cushion. You could coast a week and still be fine." Never "beat it," never "keep it growing." See voice.md stash pools.
+
+### Stash sync
+
+- Banking, digging, and rest claims are **local-only** for v1. Do not sync the stash to Notion/Obsidian. The stash and the local file always update regardless of sync.
 
 ## Sync (runs after every local write)
 
@@ -103,9 +145,9 @@ The frontmatter key is `tag_counts` (NOT `tags`, which Obsidian reserves for its
 1. Read today's daily file. If it doesn't exist, gently call it out and offer to log right now.
 2. Load `references/recap-template.md`, `references/voice.md`, and `references/bowl.md`.
 3. Compute the total score, the category breakdown, and the highest-scoring entry.
-4. **Update the stash** (see Stash section): bank surplus if total > 100, or dig in if it's a brutal low day. Do this before writing the recap so the recap can narrate it.
+4. **Update the stash** (see Stash section): bank surplus if total > 100; else **full dig** if the day has a pure-💛 Self-Care entry (fill the bowl up to 100, no-op if already there); else **soft dig** a small comfort handful if the day was hard-won (a 🔋 entry or clearly a struggling day). A claimed rest day (`rest_day: true`) neither banks nor digs. Do this before writing the recap so the recap can narrate it.
 5. Generate the recap following the template. The tone and the bowl shift by total score, including the overflow tiers (see voice.md and bowl.md):
-   - **Under 30:** very gentle. Hard day, full stop. If the stash dug in, this is where the "past-you saved up for exactly this" moment lands.
+   - **Under 30:** very gentle. Hard day, full stop. If the day held a pure-💛 rest entry, the stash fully dug in and this is where the "past-you saved up for exactly this" moment lands. If it was hard-won 💛 + 🔋 effort, the soft dig brings a small comforting handful and the message is "what you did counted at full weight, and here's a little extra because today was hard, not because you had to earn it."
    - **30-99:** gentle to warm. Name what they did do. A real day with real life in it.
    - **100-149 (overflow, pure joy):** blunt and validating. Bowl overflows, pet does its happy dance. "You crossed 100. Everything past this is bonus. Your brain's about to discount it. Don't let it."
    - **150-199 (stuffed, first soft flag):** pet's visibly full, slowing down. "That's a BIG day. Your guy's getting full. You're allowed to stop, you know."
@@ -133,6 +175,30 @@ The frontmatter key is `tag_counts` (NOT `tags`, which Obsidian reserves for its
 7. **Run sync.** In Obsidian: `<vault_path>/<subfolder>/reviews/...`. In Notion: create as a child page under `parent_page_id` (NOT inside the day-database), titled "Week of YYYY-MM-DD" or "Month of YYYY-MM". See `sync-notion.md`.
 8. Reply in chat with the report itself plus the local file link.
 
+## Mode: dig (manual top-up)
+
+The user is struggling *right now* and wants the pet to dig into reserves before recap. Same loving beat as the auto dig, but on demand.
+
+1. Read today's file (if any) for the running total. Load `references/voice.md`, `references/bowl.md`, and the pet file.
+2. Compute the day's average cost (recent average day total, per the Pricing rule). Top the bowl up *toward* that average, not past it: `amount = max(0, avg - today_total)`. If today is already at/above average, the pet still comes and sits with them, shares a small handful (~10), and the message does the work, you never tell them they didn't need it.
+3. Apply the **soft warning** check once if it would leave the stash low. Never block.
+4. Write a `dig` ledger entry with `"trigger":"manual"`, decrease `balance`, never below 0.
+5. Reply with the dig render (see bowl.md) and the manual-dig voice (see voice.md stash pools). This is the emotional center, give it room. No productivity talk, no "but tomorrow."
+6. Local-only. Do not sync the stash. (Today's file total is unchanged by a dig; the dig tops the *bowl*, not the logged score, so there's nothing new to mirror.)
+
+## Mode: rest (claim a rest day)
+
+The user wants to pre-authorize a guilt-free zero day, today or tomorrow, paid from the stash.
+
+1. Determine the target date: **today** or **tomorrow** (ask only if unclear). Load `references/voice.md`, `references/bowl.md`, and the pet file.
+2. Compute the **rest-day cost** (rounded recent average, floor 50, fallback 100, per Pricing).
+3. Tell them the price in rest terms, not just a number: "A rest day runs about [cost] right now, and you've got [daysOff] banked. Easily covered." Apply the **soft warning** once if the claim would leave the stash low. Never block, never make them justify it.
+4. On confirm: write a `rest` ledger entry `{date: target, type:"rest", amount: cost, note:"Rest day claimed"}`, decrease `balance` (never below 0; if short, spend what's left and say so warmly).
+5. Mark the target day's file: create it if needed with frontmatter `rest_day: true` and a pre-filled bowl note. The bowl for a claimed rest day starts **covered** (full), not empty. The user can still log things on a rest day, anything they log is pure bonus on top, never required.
+6. **On recap of a claimed rest day:** never auto-dig (already covered) and never bank surplus from the pre-fill. If they logged real entries too, celebrate those as bonus. The day reads as *planned rest, fully covered*, never as a low/failed day. The pet's whole job that day is to keep them company, not to be fed.
+7. Reply with the rest-claim render (see bowl.md) and rest-claim voice (see voice.md stash pools): permission, not a transaction.
+8. Local-only stash. The `rest_day` flag on the daily file *does* sync with the file like any other frontmatter.
+
 ## Hard rules
 
 - Never lecture. Never say "you should". Never suggest the user do more.
@@ -140,6 +206,7 @@ The frontmatter key is `tag_counts` (NOT `tags`, which Obsidian reserves for its
 - **No punishing streaks.** Missing a day never resets-to-zero-you-failed. The pet just naps an extra day. Streaks-as-weapon are how these apps lose the exact people they're for.
 - **No comparison/leaderboard.** Never compare the user's output to anyone else's, or rank one day against another.
 - **Past 200, never gamify the ceiling.** A too-full pet is a soft signal to rest, not an achievement to chase. The skill's highest expression is a 220 day followed by a guilt-free 20 day, not a 300 day.
+- **The stash is never a points shop.** It only ever buys rest (auto dig, manual dig, rest-day claim). No prizes, no pet cosmetics, no real-world rewards, no "save up for X." A growing balance is never framed as a score to beat or a number to protect, it's rest already earned. Never guilt the user for spending it; spending it guilt-free is the entire point.
 - Rest entries are real entries. Score them. Do not dismiss them.
 - When the user logs something self-deprecating ("I literally just sat there for 3 hours"), score it appropriately and reflect it back without the self-deprecation. Receipts only.
 - No em-dashes, no en-dashes. Replace with commas, colons, parens, or new sentences.

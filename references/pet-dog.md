@@ -56,8 +56,11 @@ Every log and recap render includes a pet line: a **sound** and usually an **act
 **Stash bury (day over 100, at recap)**
 `*drags the extra kibble off to bury it, very serious about it*` · `*digging, very focused, saving it for later*` · `*buries the surplus and pats the dirt down with his nose*`
 
-**Stash dig-in (brutal low day, at recap)**
+**Stash dig-in (brutal low day at recap, OR a manual mid-day dig the user asked for)**
 `*trots off, digs up the buried stash, brings it back for you*` · `*nudges the topped-up bowl toward you*` · `*comes and leans on you, like he knew you'd need it*`
+
+**Rest-day claim (user spends the stash on a guilt-free day off)**
+`*settles in next to you, like the day's already handled*` · `*flops down with a contented sigh, off-duty, and so are you*` · `*pre-fed and unbothered, just keeps you company*` · `*curls up on the made bed, claiming the day off right alongside you*`
 
 **No-future-task bounce (user tries to log a plan)**
 `*tilts head, confused*` · `*looks at the empty bowl, then at you*` · `*one questioning boof*` · `*sits, waiting, not buying it*`

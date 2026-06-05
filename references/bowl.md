@@ -61,7 +61,7 @@ The pet line comes from `pet-dog.md` / `pet-cat.md`. Pick the tier by the moment
 
 The pet's reaction is not linear. It shifts emotionally as the total climbs, and the message quietly turns from "go" to "whoa, sit down." Pull the pet line from the pet file's special-event reactions; pull the narrator line from voice.md's recap pools. The energy by tier:
 
-- **0-29 (hard day):** pet is calm, curled up, fed enough. Never sad, never accusing. If the stash dug in, the pet brings the buried stash to you (see below).
+- **0-29 (hard day):** pet is calm, curled up, fed enough. Never sad, never accusing. If the day held a pure-💛 rest entry, the stash fully digs in and rounds the bowl up to 100 (see below). If it was hard-won 💛 + 🔋 effort, a **soft dig** brings a small handful on top: the bowl stays low and honest (never past 60), and the words carry it ("that counted at full weight, the extra's just because today was hard").
 - **30-99 (a real day):** pet content, settled, satisfied.
 - **100-149 (overflow, pure joy):** bowl spills over (✨), pet does its biggest happy-dance. All gas no brakes, you earned the party.
 - **150-199 (stuffed, first soft flag):** round belly, slowing down, content but sleepy. Energy starts turning toward rest.
@@ -77,11 +77,37 @@ When the stash **banks** (day over 100, at recap):
 Banked 120 in the stash for a rainy day. Stash: 1194. Past-you's got your back.
 ```
 
-When the stash **digs in** (brutal low day, at recap), this is the most important render in the whole skill, give it room:
+When the stash **digs in** (the day held a pure-💛 rest entry, at recap), it fills the bowl up to 100 (`dig = max(0, 100 − total)`, no-op if already there). Give it room:
 ```
 🐱 Goblin: *fishes the hidden stash back out, drops it in the bowl for you*
-🍚🍚🍚🍚🍚🍚🍚░░░  topped up to 70 with reserves
-Rough one, huh. That's fine. Past-you saved up for exactly this. You're covered.
+🍚🍚🍚🍚🍚🍚🍚🍚🍚🍚  rested today, rounded up to a full bowl with reserves
+You rested today, and that counts as a full day. Past-you saved up for exactly this.
+```
+
+When the day was **hard-won** (💛 + 🔋, no pure rest), the **soft dig** brings a small handful without rounding the day up (`soft = min(15, max(0, 60 − total))`, no-op at/above 60). The bowl stays honestly low:
+```
+🐶 Biscuit: *nudges a small handful over, just because today was hard*
+🍚🍚🍚░░░░░░░  18, plus a small handful from <name> (still a hard day, and that's okay)
+Brushing your teeth took everything, and it's on the list at full weight. The extra's just a hug.
+```
+
+When the user asks for a **manual dig** (mid-day top-up, they reached for it), same warmth as the auto dig:
+```
+🐶 Biscuit: *trots off, digs up the buried stash, brings it back, leans on you*
+🍚🍚🍚🍚🍚🍚░░░░  topped up toward 60, the day's covered
+You don't even have to explain. Reaching for it is the hard part, and you just did it.
+```
+
+When the user **claims a rest day** (spending the stash on a guilt-free day off). Permission, not a transaction. The bowl starts full for the claimed day:
+```
+🐶 Biscuit: *settles in next to you, like the day's already handled*
+🍚🍚🍚🍚🍚🍚🍚🍚🍚🍚  rest day, pre-fed. Stash: 1147 (~11 days off banked)
+Done. Tomorrow's covered. The bowl starts full and you don't owe it a single thing.
+```
+
+The **soft warning** (a spend would leave reserves low) is one line *before* the render, never a wall:
+```
+Heads up, that's most of what's buried. Still yours to spend, just so you know.
 ```
 
 ## Hard rules for the bowl
