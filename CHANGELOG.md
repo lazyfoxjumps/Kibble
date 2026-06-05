@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ---
 
-## [2.3.0] - 2026-06-05
+## [2.3.0] - 2026-06-05 (release v1.1.0)
 
 ### Changed (auto-dig is now tag-triggered, not low-total-triggered)
 
